@@ -1,0 +1,8 @@
+# Byte compiled
+__pycache__/
+
+# Environment
+.venv/
+
+# Exclude old Python files and Notebooks
+old/
