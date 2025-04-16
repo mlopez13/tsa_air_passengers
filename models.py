@@ -4,6 +4,9 @@ import pandas as pd
 from statsmodels.tsa.seasonal import seasonal_decompose
 from sklearn.linear_model import LinearRegression
 
+from torch import nn
+from torch.nn import functional as F
+
 
 class Model():
     def __init__(self):
@@ -43,3 +46,17 @@ class MA(Model):
 class AR(Model):
     def __init__(self):
         super().__init__()
+
+class LSTMNet(nn.Module):
+    def __init__(self, dim_input, dim_recurrent, num_layers, dim_output):
+        super().__init__()
+        self.lstm = nn.LSTM(input_size=dim_input,
+                            hidden_size=dim_recurrent,
+                            num_layers=num_layers,
+                            batch_first=True)
+        self.linear = nn.Linear(dim_recurrent, dim_output)
+
+    def forward(self, x):
+        x, _ = self.lstm(x)
+        y_pred = self.linear(x)
+        return y_pred
